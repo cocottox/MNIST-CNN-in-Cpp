@@ -5,6 +5,8 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
+using namespace std; //Necessario per i cout a l.41,50,59,60
+
 // Source - https://stackoverflow.com/a/52406407
 // Posted by Jayhello, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-10-02, License - CC BY-SA 4.0
@@ -19,6 +21,14 @@ void read_mnist_cv(const char* image_filename, const char* label_filename){
     std::ifstream image_file(image_filename, std::ios::in | std::ios::binary);
     std::ifstream label_file(label_filename, std::ios::in | std::ios::binary);
 
+    if (!image_file.is_open()) {
+        std::cerr << "ERRORE: Impossibile aprire il file immagini: " << image_filename << std::endl;
+        return;
+    }
+    if (!label_file.is_open()) {
+        std::cerr << "ERRORE: Impossibile aprire il file etichette: " << label_filename << std::endl;
+        return;
+    }
     // Read the magic and the meta data
     uint32_t magic;
     uint32_t num_items;
