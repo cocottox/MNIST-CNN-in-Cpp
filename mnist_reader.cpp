@@ -6,6 +6,7 @@
 #include <opencv2/opencv.hpp>
 
 using namespace std; //Necessario per i cout a l.41,50,59,60
+using namespace cv;
 
 // Source - https://stackoverflow.com/a/52406407
 // Posted by Jayhello, modified by community. See post 'Timeline' for change history
@@ -26,7 +27,7 @@ void read_mnist_cv(const char* image_filename, const char* label_filename){
         return;
     }
     if (!label_file.is_open()) {
-        std::cerr << "ERRORE: Impossibile aprire il file etichette: " << label_filename << std::endl;
+        std::cerr << "ERRORE: Impossibile aprire il file labels: " << label_filename << std::endl;
         return;
     }
     // Read the magic and the meta data
