@@ -24,13 +24,13 @@ int main(){
     float* prima_immagine = &train_images[idx * img_size];
     int primo_label = train_labels[idx];
 
-    std::cout<< "Primo label" << primo_label << std::endl;
+    std::cout<< "Primo label --> " << primo_label << std::endl;
     //Questo for va tolto, è solo per mostrare l'immagine a terminale con 1 e 0
     for(int i=0;i<img_size;i++){
         if(prima_immagine[i]>0){prima_immagine[i]=1;}
         std::cout << prima_immagine[i];
         //sto if è solo per andare a capo e renderla leggibile ogni 28esimo pixel della riga
-        if(i % 28 == 0){std::cout<<std::endl;}
+        if(i % 28 == 0 & i!=0){std::cout<<std::endl;}
     }
     
     return 0;
