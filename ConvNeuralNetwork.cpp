@@ -41,3 +41,14 @@ float cross_entropy(const float* arr, int label){
     }
     return -std::log(idx);
 }
+
+class ReLu{
+    void forward(float* arr, size_t dim){
+        for (size_t i=0;i<dim;i++){
+            if(arr[i]>=0){} else{arr[i] = 0;}
+        } 
+    }
+    void backward(float* arr, size_t dim){
+         
+    }
+};

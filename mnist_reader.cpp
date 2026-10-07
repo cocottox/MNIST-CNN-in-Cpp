@@ -17,38 +17,43 @@ uint32_t swap_endian(uint32_t val) {
     return (val << 16) | (val >> 16);
 }
 
-void read_mnist_cv(const char* image_filename, const char* label_filename){
+bool read_mnist_cv(const char* image_filename,
+                   const char* label_filename,
+                   float*& images,
+                   int*& labels,
+                   uint32_t& num_items,
+                   uint32_t& img_size)
+    {
     // Open files
     std::ifstream image_file(image_filename, std::ios::in | std::ios::binary);
     std::ifstream label_file(label_filename, std::ios::in | std::ios::binary);
 
     if (!image_file.is_open()) {
         std::cerr << "ERRORE: Impossibile aprire il file immagini: " << image_filename << std::endl;
-        return;
+        return false;
     }
     if (!label_file.is_open()) {
         std::cerr << "ERRORE: Impossibile aprire il file labels: " << label_filename << std::endl;
-        return;
+        return false;
     }
     // Read the magic and the meta data
-    uint32_t magic;
-    uint32_t num_items;
-    uint32_t num_labels;
-    uint32_t rows;
-    uint32_t cols;
+    uint32_t magic = 0;
+    uint32_t num_labels = 0;
+    uint32_t rows = 0;
+    uint32_t cols = 0;
 
     image_file.read(reinterpret_cast<char*>(&magic), 4);
     magic = swap_endian(magic);
     if(magic != 2051){
         cout<<"Incorrect image file magic: "<<magic<<endl;
-        return;
+        return false;
     }
 
     label_file.read(reinterpret_cast<char*>(&magic), 4);
     magic = swap_endian(magic);
     if(magic != 2049){
         cout<<"Incorrect image file magic: "<<magic<<endl;
-        return;
+        return false;
     }
 
     image_file.read(reinterpret_cast<char*>(&num_items), 4);
@@ -57,7 +62,7 @@ void read_mnist_cv(const char* image_filename, const char* label_filename){
     num_labels = swap_endian(num_labels);
     if(num_items != num_labels){
         cout<<"image file nums should equal to label num"<<endl;
-        return;
+        return false;
     }
 
     image_file.read(reinterpret_cast<char*>(&rows), 4);
@@ -65,29 +70,40 @@ void read_mnist_cv(const char* image_filename, const char* label_filename){
     image_file.read(reinterpret_cast<char*>(&cols), 4);
     cols = swap_endian(cols);
 
+    img_size = rows * cols;
+
     cout<<"image and label num is: "<<num_items<<endl;
     cout<<"image rows: "<<rows<<", cols: "<<cols<<endl;
+    
+    images = new float[num_items * img_size];
+    labels = new int[num_items];
 
-    char label;
-    char* pixels = new char[rows * cols];
+    unsigned char* temp_pixels = new unsigned char[img_size];
+    unsigned char temp_label = 0;
 
     for (int item_id = 0; item_id < num_items; ++item_id) {
         // read image pixel
-        image_file.read(pixels, rows * cols);
+        image_file.read(reinterpret_cast<char*>(temp_pixels),img_size);
         // read label
-        label_file.read(&label, 1);
+        label_file.read(reinterpret_cast<char*>(&temp_label),1);
 
-        string sLabel = std::to_string(int(label));
-        cout<<"lable is: "<<sLabel<<endl;
-        // convert it to cv Mat, and show it
-        cv::Mat image_tmp(rows,cols,CV_8UC1,pixels);
-        // resize bigger for showing
-        cv::resize(image_tmp, image_tmp, cv::Size(100, 100));
-        cv::imshow(sLabel, image_tmp);
-        cv::waitKey(0);
+        labels[item_id] = static_cast<int>(temp_label);
+        uint32_t offset = item_id * img_size;
+
+        for (uint32_t p=0;p<img_size;++p){
+            images[offset+p] = static_cast<float>(temp_pixels[p]) / 255.0f;
+        }
+        //cout<<"lable is: "<<sLabel<<endl;
+        //// convert it to cv Mat, and show it
+        //cv::Mat image_tmp(rows,cols,CV_8UC1,pixels);
+        //// resize bigger for showing
+        //cv::resize(image_tmp, image_tmp, cv::Size(100, 100));
+        //cv::imshow(sLabel, image_tmp);
+        //cv::waitKey(0);
     }
 
-    delete[] pixels;
+    delete[] temp_pixels;
+    return true;
 }
 
 
