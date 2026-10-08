@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <vector>
 
 //File principale in cui trascrivere le funzioni del CNN, poi lo renderemo un file.h
 //Se vogliamo renderlo cool possiamo lavorare il progetto con assert cosí mano a mano verifichiamo
@@ -43,12 +44,24 @@ float cross_entropy(const float* arr, int label){
 }
 
 class ReLu{
-    void forward(float* arr, size_t dim){
-        for (size_t i=0;i<dim;i++){
-            if(arr[i]>=0){} else{arr[i] = 0;}
+    private:
+        std::vector<float> X;
+    public:
+        ReLu(){
+        }
+        std::vector<float> forward(const std::vector<float> &input_X){
+            this->X = input_X;
+            std::vector<float> output(input_X.size());
+            for (size_t i=0;i<input_X.size();i++){
+                output[i] = std::max(0.0f,input_X[i]);
+            }
+            return output;
         } 
-    }
-    void backward(float* arr, size_t dim){
-         
-    }
+        std::vector<float> backward(const std::vector<float> &dY){
+            std::vector<float> dX(dY.size());
+            for (size_t i=0;i<dY.size();i++){
+                dX[i] = (this->X[i] > 0.0f) ? dY[i] : 0.0f;
+            }
+            return dX;
+        }
 };
