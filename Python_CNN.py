@@ -2,10 +2,13 @@ import gzip
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.ndimage import convolve
+import os
 
 
 def test_reader():
-    with open("MNIST_ORG/train-images.idx3-ubyte","rb") as f:
+    base_dir = os.path.dirname(os.path.abspath(__file__)) #create a base directory to read the MNIST data
+    train_images_path = os.path.join(base_dir, "MNIST_ORG", "train-images.idx3-ubyte")
+    with open(train_images_path,"rb") as f:
         magic = int.from_bytes(f.read(4),"big")
         num_images = int.from_bytes(f.read(4),"big")
         rows = int.from_bytes(f.read(4),"big")
@@ -17,7 +20,9 @@ def test_reader():
         return data
 
 def label_reader():
-    with open("MNIST_ORG/train-labels.idx1-ubyte","rb") as f:
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    train_labels_path = os.path.join(base_dir, "MNIST_ORG", "train-labels.idx1-ubyte")
+    with open(train_labels_path,"rb") as f:
         magic = int.from_bytes(f.read(4),"big")
         num_labels = int.from_bytes(f.read(4),"big")
         buf = f.read(num_labels)
