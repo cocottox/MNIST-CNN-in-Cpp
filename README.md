@@ -1,4 +1,4 @@
-# MNIST CNN in Cpp
+# MNIST CNN in Cpp - by Cocottox 
 
 This project is a simple handwritten-digit recognition experiment built around the MNIST dataset. It combines:
 
