@@ -1,4 +1,4 @@
-#include "mnist_reader.h"
+#include "../include/mnist_reader.h"
 #include <string>
 #include <cstdint>
 #include <fstream>
