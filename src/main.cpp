@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-#include "mnist_reader.h"
+#include "../include/mnist_reader.h"
+// #include "../include/CNN.h"
 
 
 int main(){

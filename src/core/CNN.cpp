@@ -1,6 +1,7 @@
+#include "../include/CNN.h"
 #include <iostream>
 #include <string>
-#include <math.h>
+#include <cmath>
 #include <vector>
 
 //File principale in cui trascrivere le funzioni del CNN, poi lo renderemo un file.h
@@ -43,25 +44,21 @@ float cross_entropy(const float* arr, int label){
     return -std::log(idx);
 }
 
-class ReLu{
-    private:
-        std::vector<float> X;
-    public:
-        ReLu(){
+ReLu::ReLu(){
+}
+    
+    std::vector<float> ReLu::forward(const std::vector<float> &input_X){
+        this->X = input_X;
+        std::vector<float> output(input_X.size());
+        for (size_t i=0;i<input_X.size();i++){
+            output[i] = std::max(0.0f,input_X[i]);
         }
-        std::vector<float> forward(const std::vector<float> &input_X){
-            this->X = input_X;
-            std::vector<float> output(input_X.size());
-            for (size_t i=0;i<input_X.size();i++){
-                output[i] = std::max(0.0f,input_X[i]);
-            }
-            return output;
-        } 
-        std::vector<float> backward(const std::vector<float> &dY){
-            std::vector<float> dX(dY.size());
-            for (size_t i=0;i<dY.size();i++){
-                dX[i] = (this->X[i] > 0.0f) ? dY[i] : 0.0f;
-            }
-            return dX;
+        return output;
+    } 
+    std::vector<float> ReLu::backward(const std::vector<float> &dY){
+        std::vector<float> dX(dY.size());
+        for (size_t i=0;i<dY.size();i++){
+            dX[i] = (this->X[i] > 0.0f) ? dY[i] : 0.0f;
         }
-};
+        return dX;
+    }
