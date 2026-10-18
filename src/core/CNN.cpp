@@ -13,11 +13,13 @@
 //pure nei commit,
 //  Matteo
 
-void softmax(float* arr, size_t dim){
+void softmax(std::vector<float>& arr){
     //Funzione per ottenere una probabilità da ogni elemento di un array basandosi su tutti
     //i valori, noi la usiamo per il vettore di uscita finale ez
-    if (dim==0) return;
+    size_t dim = arr.size();
 
+    if (dim==0) return;
+    
     float max_val = arr[0];
     for(size_t i=0;i<dim;i++){
         if(arr[i]>max_val){
@@ -60,5 +62,5 @@ ReLu::ReLu(){
         for (size_t i=0;i<dY.size();i++){
             dX[i] = (this->X[i] > 0.0f) ? dY[i] : 0.0f;
         }
-        return dX;
+            return dX;
     }
