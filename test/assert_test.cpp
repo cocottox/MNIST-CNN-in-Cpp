@@ -6,6 +6,7 @@
 
 #include <stdio.h> 
 #include <vector>
+#include <cmath>
 
 
 TEST_CASE("--- Test Funzione softmax ---","[softmax test]"){
@@ -53,6 +54,25 @@ TEST_CASE("--- Test Funzione softmax ---","[softmax test]"){
     }
 
     REQUIRE(sum4 == Catch::Approx(1.0f).margin(0.0001f));
+}
+
+TEST_CASE("--- Cross Entropy Test ---","[cross entropy]"){
+
+    std::vector<float> vect_cross1 = {0.0f,0.0f,0.0f,1.0f};
+    int label1 = 3;
+    float ans1 = cross_entropy(vect_cross1,label1);
+    REQUIRE(ans1 == -std::log(1.0f));
+
+    std::vector<float> vect_cross2 = {3.0f,1.0f,0.0f,7.0f};
+    int label2 = 1;
+    float ans2 = cross_entropy(vect_cross2,label2);
+    REQUIRE(ans2 == -std::log(1.0f));
+
+    std::vector<float> vect_cross3 = {50.0f,0.0f,2.0f,3.0f};
+    int label3 = 2;
+    float ans3 = cross_entropy(vect_cross3,label3);
+    REQUIRE(ans3 == -std::log(2.0f));
+
 }
 
 TEST_CASE("--- ReLu Class TEst ---","[ReLu Test]"){

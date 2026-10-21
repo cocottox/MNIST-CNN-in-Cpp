@@ -36,7 +36,7 @@ void softmax(std::vector<float>& arr){
     }
 }
 
-float cross_entropy(const float* arr, int label){
+float cross_entropy(const std::vector<float> &arr, int label){
     //Questa serve a calcolare di quanto si è sbagliato il CNN
     float idx = arr[label];
     const float eps = 1e-7f;
