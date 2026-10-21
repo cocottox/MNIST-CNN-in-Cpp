@@ -6,9 +6,9 @@
 #include <vector>
 
 
-void softmax(float* arr, size_t dim);   
+void softmax(std::vector<float>& arr);   
 
-float cross_entropy(const float* arr, int label);
+float cross_entropy(const std::vector<float> &arr, int label);
 
 class ReLu{
     private:

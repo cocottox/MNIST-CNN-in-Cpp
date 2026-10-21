@@ -13,11 +13,13 @@
 //pure nei commit,
 //  Matteo
 
-void softmax(float* arr, size_t dim){
+void softmax(std::vector<float>& arr){
     //Funzione per ottenere una probabilità da ogni elemento di un array basandosi su tutti
     //i valori, noi la usiamo per il vettore di uscita finale ez
-    if (dim==0) return;
+    size_t dim = arr.size();
 
+    if (dim==0) return;
+    
     float max_val = arr[0];
     for(size_t i=0;i<dim;i++){
         if(arr[i]>max_val){
@@ -34,7 +36,7 @@ void softmax(float* arr, size_t dim){
     }
 }
 
-float cross_entropy(const float* arr, int label){
+float cross_entropy(const std::vector<float> &arr, int label){
     //Questa serve a calcolare di quanto si è sbagliato il CNN
     float idx = arr[label];
     const float eps = 1e-7f;
@@ -60,5 +62,5 @@ ReLu::ReLu(){
         for (size_t i=0;i<dY.size();i++){
             dX[i] = (this->X[i] > 0.0f) ? dY[i] : 0.0f;
         }
-        return dX;
+            return dX;
     }
